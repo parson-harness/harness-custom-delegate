@@ -4,8 +4,13 @@ FROM $DELEGATE_IMAGE:$DELEGATE_TAG
 
 USER 0
 
-RUN microdnf update -y \
-  && microdnf install -y unzip git curl jq shadow-utils
+RUN microdnf update \  
+  && microdnf install --nodocs \  
+    unzip \  
+    yum-utils \
+    curl \
+    jq \
+    shadow-utils
 
 RUN useradd -u 1001 -g 0 harness
 
