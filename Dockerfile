@@ -56,7 +56,11 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2
 # gpgcheck=1 \n\
 # gpgkey=https://packages.microsoft.com/keys/microsoft.asc" | tee /etc/yum.repos.d/azure-cli.repo && microdnf install azure-cli
 
-RUN curl -o- -L https://slss.io/install | bash \
-  && ln -s /opt/harness-delegate/.serverless/bin/serverless /usr/local/bin/serverless
+# RUN curl -o- -L https://slss.io/install | bash \
+#  && ln -s /opt/harness-delegate/.serverless/bin/serverless /usr/local/bin/serverless
+
+# Install serverless
+RUN microdnf install -y nodejs \
+  && npm install -g serverless@2.50.0
 
 USER 1001
