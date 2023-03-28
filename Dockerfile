@@ -6,7 +6,8 @@ USER root
 RUN microdnf update \  
   && microdnf install --nodocs \  
     unzip \  
-    yum-utils  
+    yum-utils \
+    git 
   
 RUN yum-config-manager --add-repo https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo \  
   && microdnf install -y terraform     
