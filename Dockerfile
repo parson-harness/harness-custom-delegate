@@ -1,29 +1,22 @@
 ARG DELEGATE_TAG=latest
 ARG DELEGATE_IMAGE=harness/delegate
-FROM $DELEGATE_IMAGE:$DELEGATE_TAG
-
-USER 0
-
+FROM $DELEGATE_IMAGE:$DELEGATE_TAG.minimal
+USER root
+  
 RUN microdnf update \  
   && microdnf install --nodocs \  
     unzip \  
-    yum-utils \
-    curl \
-    jq \
-    shadow-utils
+    yum-utils  
+  
+RUN yum-config-manager --add-repo https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo \  
+  && microdnf install -y terraform     
+  
+RUN mkdir /opt/harness-delegate/tools && cd /opt/harness-delegate/tools \  
+  && curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && chmod +x kubectl   
+  
+ENV PATH=/opt/harness-delegate/tools/:$PATH  
 
 RUN useradd -u 1001 -g 0 harness
-
-# Install kubectl
-RUN curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" \
-  && install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl \
-  && kubectl version --client=true
-
-# Install TF
-# RUN curl -LO  https://releases.hashicorp.com/terraform/1.3.1/terraform_1.3.1_linux_amd64.zip \
-#   && unzip -q terraform_1.3.1_linux_amd64.zip \
-#   && mv ./terraform /usr/bin/ \
-#   && terraform --version
 
 # Install tfenv
 RUN git clone --depth=1 https://github.com/tfutils/tfenv.git ~/.tfenv \
@@ -44,15 +37,15 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2
   && aws --version
 
 # Install GCP CLI
-RUN echo -e "[google-cloud-cli] \n\
-name=Google Cloud CLI \n\
-baseurl=https://packages.cloud.google.com/yum/repos/cloud-sdk-el8-x86_64 \n\
-enabled=1 \n\
-gpgcheck=1 \n\
-repo_gpgcheck=0 \n\
-gpgkey=https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg" | tee /etc/yum.repos.d/google-cloud-sdk.repo \
-  && microdnf install google-cloud-cli \
-  && gcloud version
+# RUN echo -e "[google-cloud-cli] \n\
+# name=Google Cloud CLI \n\
+# baseurl=https://packages.cloud.google.com/yum/repos/cloud-sdk-el8-x86_64 \n\
+# enabled=1 \n\
+# gpgcheck=1 \n\
+# repo_gpgcheck=0 \n\
+# gpgkey=https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg" | tee /etc/yum.repos.d/google-cloud-sdk.repo \
+#  && microdnf install google-cloud-cli \
+#  && gcloud version
 
 # Install Azure CLI
 # RUN echo -e "[azure-cli] \n\
