@@ -19,6 +19,10 @@ ENV PATH=/opt/harness-delegate/tools/:$PATH
 
 RUN useradd -u 1001 -g 0 harness
 
+# Install serverless
+RUN microdnf install -y nodejs \
+  && npm install -g serverless@2.50.0
+  
 # Install tfenv
 RUN git clone --depth=1 https://github.com/tfutils/tfenv.git ~/.tfenv \
   && ln -s ~/.tfenv/bin/* /usr/local/bin \
@@ -26,10 +30,10 @@ RUN git clone --depth=1 https://github.com/tfutils/tfenv.git ~/.tfenv \
   && tfenv use latest
 
 # Install Terragrunt
-RUN curl -LO https://github.com/gruntwork-io/terragrunt/releases/download/v0.42.3/terragrunt_linux_amd64 \
-  && mv terragrunt_linux_amd64 /usr/bin/terragrunt \
-  && chmod +x /usr/bin/terragrunt \
-  && terragrunt --version
+# RUN curl -LO https://github.com/gruntwork-io/terragrunt/releases/download/v0.42.3/terragrunt_linux_amd64 \
+#  && mv terragrunt_linux_amd64 /usr/bin/terragrunt \
+#  && chmod +x /usr/bin/terragrunt \
+#  && terragrunt --version
 
 # Install AWS CLI
 RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
@@ -58,9 +62,5 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2
 
 # RUN curl -o- -L https://slss.io/install | bash \
 #  && ln -s /opt/harness-delegate/.serverless/bin/serverless /usr/local/bin/serverless
-
-# Install serverless
-RUN microdnf install -y nodejs \
-  && npm install -g serverless@2.50.0
 
 USER 1001
