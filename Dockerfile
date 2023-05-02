@@ -64,7 +64,7 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2
 #  && ln -s /opt/harness-delegate/.serverless/bin/serverless /usr/local/bin/serverless
 
 # Install CyberArk CLI
-RUN curl -LO"https://github.com/cyberark/cyberark-conjur-cli/releases/download/v7.1.0/conjur-cli-rhel-8.tar.gz" \
+RUN curl -LO "https://github.com/cyberark/cyberark-conjur-cli/releases/download/v7.1.0/conjur-cli-rhel-8.tar.gz" \
   && tar -xvf conjur-cli-rhel-8.tar.gz \
   && chmod +x conjur \
   && conjur --version
