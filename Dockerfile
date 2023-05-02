@@ -6,6 +6,7 @@ USER root
 RUN microdnf update \  
   && microdnf install --nodocs \  
     unzip \  
+    zip \
     yum-utils \
     git 
   
