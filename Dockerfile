@@ -63,4 +63,4 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2
 # RUN curl -o- -L https://slss.io/install | bash \
 #  && ln -s /opt/harness-delegate/.serverless/bin/serverless /usr/local/bin/serverless
 
-USER 1001
+#USER 1001
