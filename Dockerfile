@@ -67,6 +67,7 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2
 RUN curl -LO "https://github.com/cyberark/cyberark-conjur-cli/releases/download/v7.1.0/conjur-cli-rhel-8.tar.gz" \
   && tar -xvf conjur-cli-rhel-8.tar.gz \
   && chmod +x conjur \
+  && mv conjur /usr/local/bin/conjur \
   && conjur --version
 
 # USER 1001
