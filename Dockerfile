@@ -17,7 +17,7 @@ RUN mkdir /opt/harness-delegate/tools && cd /opt/harness-delegate/tools \
   
 ENV PATH=/opt/harness-delegate/tools/:$PATH  
 
-RUN useradd -u 1001 -g 0 harness
+# RUN useradd -u 1001 -g 0 harness
 
 # Install serverless
 RUN microdnf install -y nodejs \
@@ -63,4 +63,4 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2
 # RUN curl -o- -L https://slss.io/install | bash \
 #  && ln -s /opt/harness-delegate/.serverless/bin/serverless /usr/local/bin/serverless
 
-#USER 1001
+# USER 1001
