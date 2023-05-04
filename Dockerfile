@@ -1,6 +1,7 @@
-ARG DELEGATE_TAG=23.04.78918
-ARG DELEGATE_IMAGE=harness/delegate
-FROM $DELEGATE_IMAGE:$DELEGATE_TAG.minimal
+#ARG DELEGATE_TAG=23.04.78918
+#ARG DELEGATE_IMAGE=harness/delegate
+#FROM $DELEGATE_IMAGE:$DELEGATE_TAG.minimal
+FROM redhat/ubi8:latest
 USER root
   
 RUN microdnf update \  
