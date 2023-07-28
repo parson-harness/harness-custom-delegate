@@ -8,7 +8,9 @@ RUN microdnf update \
     unzip \  
     zip \
     yum-utils \
-    git 
+    git \
+    bash-completion \
+    moreutils
   
 RUN yum-config-manager --add-repo https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo \  
   && microdnf install -y terraform     
@@ -25,6 +27,8 @@ ENV PATH=/opt/harness-delegate/tools/:$PATH
 
 RUN curl --silent --location -o /usr/local/bin/kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.19.6/2021-01-05/bin/linux/amd64/kubectl \
   && chmod +x /usr/local/bin/kubectl
+  && kubectl completion bash >>  ~/.bash_completion
+  && . ~/.bash_completion
 
 # RUN useradd -u 1001 -g 0 harness
 
@@ -50,8 +54,18 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2
   && ./aws/install \
   && aws --version
 
-RUN curl -LO "https://dot.net/v1/dotnet-install.sh" \
-  && ./dotnet-install.sh --channel 6.0
+RUN pip install --upgrade awscli && hash -r
+
+# Install .NET
+ENV DOTNET_VERSION=6.0.0
+
+RUN curl -fSL --output dotnet.tar.gz https://dotnetcli.azureedge.net/dotnet/Runtime/$DOTNET_VERSION/dotnet-runtime-$DOTNET_VERSION-linux-x64.tar.gz \
+    && dotnet_sha512='6a1ae878efdc9f654e1914b0753b710c3780b646ac160fb5a68850b2fd1101675dc71e015dbbea6b4fcf1edac0822d3f7d470e9ed533dd81d0cfbcbbb1745c6c' \
+    && echo "$dotnet_sha512 dotnet.tar.gz" | sha512sum -c - \
+    && mkdir -p /usr/share/dotnet \
+    && tar -zxf dotnet.tar.gz -C /usr/share/dotnet \
+    && rm dotnet.tar.gz \
+    && ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet
   
 # Install GCP CLI
 # RUN echo -e "[google-cloud-cli] \n\
