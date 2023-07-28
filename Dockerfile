@@ -12,6 +12,11 @@ RUN microdnf update \
   
 RUN yum-config-manager --add-repo https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo \  
   && microdnf install -y terraform     
+
+RUN yum install jq -y  
+
+RUN curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp \
+  && mv -v /tmp/eksctl /usr/local/bin
   
 RUN mkdir /opt/harness-delegate/tools && cd /opt/harness-delegate/tools \  
   && curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && chmod +x kubectl   
@@ -41,6 +46,9 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2
   && unzip -q awscliv2.zip \
   && ./aws/install \
   && aws --version
+
+RUN curl -sSL https://dot.net/v1/dotnet-install.sh \
+  && ./dotnet-install.sh --channel 6
 
 # Install GCP CLI
 # RUN echo -e "[google-cloud-cli] \n\
