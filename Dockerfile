@@ -13,7 +13,7 @@ RUN microdnf update \
 RUN yum-config-manager --add-repo https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo \  
   && microdnf install -y terraform     
 
-RUN yum install jq -y  
+RUN microdnf install jq -y  
 
 RUN curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp \
   && mv -v /tmp/eksctl /usr/local/bin
@@ -22,6 +22,8 @@ RUN mkdir /opt/harness-delegate/tools && cd /opt/harness-delegate/tools \
   && curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && chmod +x kubectl   
   
 ENV PATH=/opt/harness-delegate/tools/:$PATH  
+
+RUN curl --silent --location -o /usr/local/bin/kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.19.6/2021-01-05/bin/linux/amd64/kubectl 
 
 # RUN useradd -u 1001 -g 0 harness
 
