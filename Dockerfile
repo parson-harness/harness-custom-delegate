@@ -54,7 +54,7 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2
   && ./aws/install \
   && aws --version
 
-RUN pip install --upgrade awscli && hash -r
+# RUN pip install --upgrade awscli && hash -r
 
 # Install .NET
 ENV DOTNET_VERSION=6.0.0
