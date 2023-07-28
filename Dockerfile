@@ -23,7 +23,8 @@ RUN mkdir /opt/harness-delegate/tools && cd /opt/harness-delegate/tools \
   
 ENV PATH=/opt/harness-delegate/tools/:$PATH  
 
-RUN curl --silent --location -o /usr/local/bin/kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.19.6/2021-01-05/bin/linux/amd64/kubectl 
+RUN curl --silent --location -o /usr/local/bin/kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.19.6/2021-01-05/bin/linux/amd64/kubectl \
+  && chmod +x /usr/local/bin/kubectl
 
 # RUN useradd -u 1001 -g 0 harness
 
@@ -49,9 +50,9 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2
   && ./aws/install \
   && aws --version
 
-RUN curl -sSL https://dot.net/v1/dotnet-install.sh \
-  && ./dotnet-install.sh --channel 6
-
+RUN curl -LO "https://dot.net/v1/dotnet-install.sh" \
+  && ./dotnet-install.sh --channel 6.0
+  
 # Install GCP CLI
 # RUN echo -e "[google-cloud-cli] \n\
 # name=Google Cloud CLI \n\
