@@ -15,6 +15,8 @@ RUN yum-config-manager --add-repo https://rpm.releases.hashicorp.com/RHEL/hashic
   
 RUN mkdir /opt/harness-delegate/tools && cd /opt/harness-delegate/tools \  
   && curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && chmod +x kubectl   
+
+RUN microdnf install jq -y  
   
 ENV PATH=/opt/harness-delegate/tools/:$PATH  
 
